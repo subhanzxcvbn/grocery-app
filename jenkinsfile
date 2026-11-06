@@ -9,11 +9,11 @@ node {
     }
 
     stage('Build Frontend') {
-        buidImages('grocery-frontend:latest', 'frontend')
+        buidImages('grocery-frontend:latest', 'client')
     }
 
     stage('build Backend') {
-        buidImages('grocery-backend:latest', 'backend')
+        buidImages('grocery-backend:latest', 'server')
 
     }
     stage('Push to Docker Hub') {
