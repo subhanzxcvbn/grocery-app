@@ -6,14 +6,27 @@ node {
             'https://github.com/subhanzxcvbn/grocery-app.git',
             'main'
          )
-    stage('Build') {
-        buildDocker(':latest')
     }
 
+    stage('Build Frontend') {
+        buildImages('grocery-frontend:latest', 'frontend')
+    }
+
+    stage('build Backend') {
+        buildImages('grocery-backend:latest', 'backend')
+
+    }
     stage('Push to Docker Hub') {
         pushDocker(
-            'django-app:latest',
-            'django-app',
+            'grocery-frontend:latest',
+            'grocery-frontend',
+            'jenkinscred'
+        )
+    }
+    stage('push to Docker hub') {
+        pushDocker(
+            'grocery-backend:latest',
+            'grocery-backend',
             'jenkinscred'
         )
     }
