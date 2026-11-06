@@ -35,7 +35,7 @@ node {
 
     stage('Deploy') {
         withCredentials([
-            file(credentialsId: 'grocery-env', variable: 'ENV_FILE')
+            file(credentialsId: 'backend-env', variable: 'ENV_FILE')
         ]) {
             sh '''
                 mkdir -p server
