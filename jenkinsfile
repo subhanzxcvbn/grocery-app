@@ -31,7 +31,21 @@ node {
         )
     }
 
-    stage('Deploy') {
-        deployDocker()
+    
+stage('Deploy') {
+    withCredentials([
+        file(credentialsId: 'grocery-env', variable: 'ENV_FILE')
+    ]) {
+        sh '''
+            mkdir -p server
+            install -m 600 "$ENV_FILE" server/.env
+        '''
+
+        try {
+            deployDocker()
+        } finally {
+            sh 'rm -f server/.env'
+        }
     }
 }
+
