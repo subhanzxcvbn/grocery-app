@@ -6,5 +6,19 @@ node {
             'https://github.com/subhanzxcvbn/grocery-app.git',
             'main'
          )
+    stage('Build') {
+        buildDocker(':latest')
+    }
+
+    stage('Push to Docker Hub') {
+        pushDocker(
+            'django-app:latest',
+            'django-app',
+            'jenkinscred'
+        )
+    }
+
+    stage('Deploy') {
+        deployDocker()
     }
 }
