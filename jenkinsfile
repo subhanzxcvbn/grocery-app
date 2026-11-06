@@ -1,3 +1,4 @@
+
 @Library('jenkins-shared-library') _
 
 node {
@@ -5,25 +6,26 @@ node {
         checkoutcode(
             'https://github.com/subhanzxcvbn/grocery-app.git',
             'main'
-         )
+        )
     }
 
     stage('Build Frontend') {
         buidImages('grocery-frontend:latest', 'client')
     }
 
-    stage('build Backend') {
+    stage('Build Backend') {
         buidImages('grocery-backend:latest', 'server')
-
     }
-    stage('Push to Docker Hub') {
+
+    stage('Push Frontend to Docker Hub') {
         pushDocker(
             'grocery-frontend:latest',
             'grocery-frontend',
             'jenkinscred'
         )
     }
-    stage('push to Docker hub') {
+
+    stage('Push Backend to Docker Hub') {
         pushDocker(
             'grocery-backend:latest',
             'grocery-backend',
@@ -31,21 +33,20 @@ node {
         )
     }
 
-    
-stage('Deploy') {
-    withCredentials([
-        file(credentialsId: 'grocery-env', variable: 'ENV_FILE')
-    ]) {
-        sh '''
-            mkdir -p server
-            install -m 600 "$ENV_FILE" server/.env
-        '''
+    stage('Deploy') {
+        withCredentials([
+            file(credentialsId: 'grocery-env', variable: 'ENV_FILE')
+        ]) {
+            sh '''
+                mkdir -p server
+                install -m 600 "$ENV_FILE" server/.env
+            '''
 
-        try {
-            deployDocker()
-        } finally {
-            sh 'rm -f server/.env'
+            try {
+                deployDocker()
+            } finally {
+                sh 'rm -f server/.env'
+            }
         }
     }
 }
-
