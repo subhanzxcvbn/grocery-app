@@ -1,3 +1,4 @@
+
 services:
   frontend:
     build:
@@ -16,8 +17,11 @@ services:
       dockerfile: Dockerfile
     container_name: grocery-backend
     ports:
-      - "3000:3000"
+      - "3000:5000"
+    env_file:
+      - ./server/.env
     environment:
       NODE_ENV: production
-      DATABASE_URL: ${DATABASE_URL}
+      PORT: 5000
     restart: unless-stopped
+
