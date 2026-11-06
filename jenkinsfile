@@ -1,0 +1,10 @@
+@Library('jenkins-shared-library') _
+
+node {
+    stage('Code CheckOut') {
+        checkoutcode(
+            'https://github.com/subhanzxcvbn/grocery-app.git',
+            'main'
+         )
+    }
+}
