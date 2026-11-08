@@ -15,7 +15,7 @@
   "type": "module",
   "description": "",
   "dependencies": {
-    "@prisma/adapter-neon": "^7.10.0",
+    "@prisma/adapter-pg": "^7.10.1",
     "@prisma/client": "^7.10.0",
     "bcrypt": "^6.0.0",
     "cloudinary": "^2.11.0",
