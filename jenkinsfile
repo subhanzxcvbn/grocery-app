@@ -1,4 +1,3 @@
-
 @Library('jenkins-shared-library') _
 
 node {
@@ -33,20 +32,31 @@ node {
         )
     }
 
-    stage('Deploy') {
-        withCredentials([
-            file(credentialsId: 'backend-env', variable: 'ENV_FILE')
-        ]) {
+    stage('SSH Connection Test') {
+        sshagent(['remote-deployment']) {
             sh '''
-                mkdir -p server
-                install -m 600 "$ENV_FILE" server/.env
+                ssh -o StrictHostKeyChecking=no ubuntu@13.220.83.125 "hostname"
             '''
-
-            try {
-                deployDocker()
-            } finally {
-                sh 'rm -f server/.env'
-            }
         }
     }
+
+    stage('Deploy') {
+    withCredentials([
+        file(credentialsId: 'backend-env', variable: 'ENV_FILE')
+    ]) {
+        sshagent(['remote-deployment']) {
+            sh '''
+                scp -o StrictHostKeyChecking=no "$ENV_FILE" ubuntu@13.220.83.125:/tmp/grocery.env
+
+                ssh -o StrictHostKeyChecking=no ubuntu@13.220.83.125 '
+                    mkdir -p ~/apps/grocery-app/server &&
+                    install -m 600 /tmp/grocery.env ~/apps/grocery-app/server/.env &&
+                    rm -f /tmp/grocery.env
+                '
+            '''
+        }
+
+        remoteDeploy()
+      }
+   }
 }
