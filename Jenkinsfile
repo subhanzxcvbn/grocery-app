@@ -28,7 +28,7 @@ node {
     }
 
     stage('Push Frontend to Docker Hub') {
-        pushDocker(
+        pushDockerwithparams(
             "grocery-frontend:${params.IMAGE_TAG}",
             'grocery-frontend',
             'jenkinscred',
@@ -37,7 +37,7 @@ node {
     }
 
     stage('Push Backend to Docker Hub') {
-        pushDocker(
+        pushDockerwithparams(
             "grocery-backend:${params.IMAGE_TAG}",
             'grocery-backend',
             'jenkinscred',
@@ -69,7 +69,7 @@ node {
                 '''
             }
 
-            remoteDeploy(params.IMAGE_TAG)
+            remoteDeploywithparams(params.IMAGE_TAG)
         }
     }
 }
