@@ -17,13 +17,13 @@ node {
             'main'
         )
     }
-if (params.DEPLOY_SERVICE == 'both' || params.DEPLOY.SERVICE == 'frontend') {
+if (params.DEPLOY_SERVICE == 'both' || params.DEPLOY_SERVICE == 'frontend') {
     stage('Build Frontend') {
         buidImages('grocery-frontend:latest', 'client')
     }
 }
 
-if (params.DEPLOY.SERVICE == 'both' || params.DEPLOY.SERVICE == 'backend' {
+if (params.DEPLOY_SERVICE == 'both' || params.DEPLOY_SERVICE == 'backend') {
     stage('Build Backend') {
         buidImages('grocery-backend:latest', 'server')
     }
