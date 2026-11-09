@@ -2,13 +2,13 @@
 
 properties([
     parameters([
-        choice(
-            name: 'DEPLOY_SERVICE',
-            string(
-                name: 'IMAGE_TAG',
-                defaultValue: 'latest',
-                description: 'Docker image version to deploy'
-            )
+        string(
+            name: 'IMAGE_TAG',
+            defaultValue: 'latest',
+            description: 'Docker image version to deploy'
+        )
+    ])
+])
 
 node {
     stage('Code CheckOut') {
