@@ -17,14 +17,17 @@ node {
             'main'
         )
     }
-
+if (params.DEPLOY_SERVICE == 'both' || params.DEPLOY.SERVICE == 'frontend') {
     stage('Build Frontend') {
         buidImages('grocery-frontend:latest', 'client')
     }
+}
 
+if (params.DEPLOY.SERVICE == 'both' || params.DEPLOY.SERVICE == 'backend' {
     stage('Build Backend') {
         buidImages('grocery-backend:latest', 'server')
     }
+}
 
     stage('Push Frontend to Docker Hub') {
         pushDocker(
