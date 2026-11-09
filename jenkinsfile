@@ -1,5 +1,15 @@
 @Library('jenkins-shared-library') _
 
+properties([
+    parameters([
+        choice(
+            name: 'DEPLOY_SERVICE',
+            choices: ['both', 'frontend', 'backend'],
+            description: 'Select which service you want to deploy'
+        )
+    ])
+])
+
 node {
     stage('Code CheckOut') {
         checkoutcode(
