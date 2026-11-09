@@ -4,11 +4,11 @@ properties([
     parameters([
         choice(
             name: 'DEPLOY_SERVICE',
-            choices: ['both', 'frontend', 'backend'],
-            description: 'Select which service you want to deploy'
-        )
-    ])
-])
+            string(
+                name: 'IMAGE_TAG',
+                defaultValue: 'latest',
+                description: 'Docker image version to deploy'
+            )
 
 node {
     stage('Code CheckOut') {
@@ -17,31 +17,30 @@ node {
             'main'
         )
     }
-if (params.DEPLOY_SERVICE == 'both' || params.DEPLOY_SERVICE == 'frontend') {
-    stage('Build Frontend') {
-        buidImages('grocery-frontend:latest', 'client')
-    }
-}
 
-if (params.DEPLOY_SERVICE == 'both' || params.DEPLOY_SERVICE == 'backend') {
-    stage('Build Backend') {
-        buidImages('grocery-backend:latest', 'server')
+    stage('Build Frontend') {
+        buidImages('grocery-frontend:${params.IMAGE_TAG}', 'client')
     }
-}
+
+    stage('Build Backend') {
+        buidImages('grocery-backend:${params.IMAGE_TAG}', 'server')
+    }
 
     stage('Push Frontend to Docker Hub') {
-        pushDocker(
-            'grocery-frontend:latest',
+        pushDockerwithparams(
+            'grocery-frontend:${params.IMAGE_TAG}',
             'grocery-frontend',
             'jenkinscred'
+            params.IMAGE_TAG
         )
     }
 
     stage('Push Backend to Docker Hub') {
         pushDocker(
-            'grocery-backend:latest',
+            'grocery-backend:${params.IMAGE_TAG}',
             'grocery-backend',
             'jenkinscred'
+            params.IMAGE_TAG
         )
     }
 
@@ -69,7 +68,7 @@ if (params.DEPLOY_SERVICE == 'both' || params.DEPLOY_SERVICE == 'backend') {
             '''
         }
 
-        remoteDeploy()
+        remoteDeploywithparams(params.IMAGE_TAG)
       }
    }
 }
