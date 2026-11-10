@@ -90,7 +90,7 @@ node {
                     '''
                 }
 
-                remoteDeploywithparams(params.IMAGE_TAG)
+                remoteDeploywithrollback(params.IMAGE_TAG, params.PREVIOUS_TAG)
             }
         }
 
