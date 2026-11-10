@@ -5,12 +5,6 @@ properties([
     parameters([
         string(
             name: 'IMAGE_TAG',
-            defaultValue: 'latest',
-            description: 'Docker image version to deploy'
-        ),
-
-        string(
-            name: 'IMAGE_TAG',
             defaultValue: 'v1.4',
             description: 'New version to deploy'
          ),
