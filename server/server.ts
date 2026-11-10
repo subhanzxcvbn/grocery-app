@@ -26,6 +26,16 @@ app.use(express.json());
 
 const port = process.env.PORT || 5000;
 
+app.get("/health", async (req: Request, res: Response) => {
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    res.status(200).json({ status: "ok", message: "Server is healthy" });
+  } catch (error) {
+    console.error("Health check failed:", error);
+    res.status(503).json({ status: "error", message: "Server is unhealthy" });
+  }
+});
+
 // Endpoints
 app.use("/api/auth", authRouter);
 app.use("/api/products", productRouter);
