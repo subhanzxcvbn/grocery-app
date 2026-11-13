@@ -16,7 +16,7 @@ properties([
     ])
 ])
 
-node {
+node('built-in') {
 
     try {
 
